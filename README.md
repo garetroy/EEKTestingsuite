@@ -1,3 +1,5 @@
+This is a testing suite that tests (VisIt)[https://wci.llnl.gov/simulation/computer-codes/visit/]
+using a dataset called EEK
 Authors:
     Garett Roberts
 Welcome to the EEK Testing suite!
