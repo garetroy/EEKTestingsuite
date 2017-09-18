@@ -1,0 +1,144 @@
+Author:
+    Garett Roberts
+
+This is the documentation to the EEK testing suite.
+This is a supplementary to the comments within the files
+and will not repeat what is coverd in the comments.
+It is recommended to read along side the code with the
+comments
+
+File: visitsetup.py
+
+    IMPORTANT:
+        Running this file assumes that you are in a similar directory structure
+        that follows (and you have all the ModifiedSrc files)
+
+        ../Visit
+        |
+        |-testingfolder/setup.py [assuming that you have all other needed files
+        |-in this directory as well]
+        |
+        |-src/ [optional]
+        |
+        |-etc...
+
+   
+    __init__:
+        The backup flag will backup all the files that we are replacing or modifying.
+        Which is important if the build that you are currently using has some of your
+        own additions or important changes that haven't been saved.
+
+        When __init__ verifies files, it is only checking for the ModifiedSrc file,
+        it is not actually looking for all of the files or the integrity of the files.
+
+    
+    buildVisit:
+        This method grabs the build_visit script from the trunk visit svn. 
+        It makes sure that it is not re-downloading the file, so if it exists, and you think
+        it is outdated, please remove the build_visit file that you currently have downloaded.
+
+        It builds with the third parties silo, netcdf, hdf5, szip, boost and runs make with 8 threads.
+        
+        Basically a wrapper function for the build_visit script.
+
+
+    backupFile:
+        It will only look for extensions that are declared in the extensions variable. If modifying
+        the code, please make sure your extensions are coverd in that string. 
+
+    replaceTimingsManagers:
+        We replace the timings managers here because they are not officially approved for the
+        trunk of visit. These timings managers give us timings files for each thread when
+        running visit with -timings
+
+    addEEK:
+        We add eek here. This is important because the current EEK in ModifiedSrc is what allows
+        us to test eek so quickly and with so much ease.
+
+    turningOnThreads:
+        So we need to be careful here. Currently this works, but if avtContourFilter is modified in
+        the future, simiply inserting the threadsafe line to the header may cause problems...
+        Just keep this in mind if you are getting compile errors. This is only turning on threads
+        for the ContourFilter. If you want to turn on threads for all filters. You are looking for
+        src/avt/Pipeline/AbstractFilters/avtSIMODataTreeIterator.
+
+        We also need to take the same precaution with adding the threaded line to cmake.
+
+File runtests.py
+
+    IMPORTANT:
+        Running this file assumes that you are in a similar directory structure
+        that follows
+
+        ../Visit
+        |
+        |-testingfolder/runtests.py [assuming that you have all other
+        |-needed files in this directory as well]
+        |
+        |-src/
+        |
+        |-etc...
+
+
+    runALLTests:
+        This does all the magic. It creates the TestingResults directory, creates the eekscript, and 
+        creates a bash command to run.  
+
+        If it is running on cori, it makes a script ./runvisit.sh and makes it executble, adding the 
+        bash command to the script and then executes the script. After deleting it.
+        This was required because I was unable to run the command by using call().
+
+File eekscriptcreator.py
+    
+    IMPORTANT:
+        Running this file assumes that you are in a similar directory structure
+        that follows
+
+        ../Visit
+        |
+        |-testingfolder/eekscriptcreator.py [assuming that you have all other
+        |-needed files in this directory as well]
+        |
+        |-src/
+        |
+        |-etc...
+
+    removeExit:
+        Removing the exit()'s from the file is important, because we append it to the end of each command
+        we create using appendToScript. It prevents the script from exiting after one run.  
+
+    appendToScript:
+        All this is doing is opening up a file, and writing to that file line by line a python script.
+        In order to modify this function you just need to follow suit with what I am doing in it.
+        It can be frustraiting to get right sometimes.  
+
+File detailedparsing.py
+
+    IMPORTANT:
+        Running this file assumes that you are in a similar directory structure
+        that follows
+
+        ../Visit
+        |
+        |-testingfolder/runtests.py [assuming that you have all other
+        |-needed files in this directory as well]
+        |
+        |-testingfolder/TestResults/
+        |
+        |-src/
+        |
+        |-etc...
+
+    __init__:
+        I created the filebuff varaible so that we didn't have to do much I/O until necissary.
+
+        The threaddirs is created here by checking for all directories that have "threads" in it
+        then by sorting/
+
+        The header for the summary file is created here also and placed into the file buffer.
+
+   grabTimings:
+        This walks through the directories, finding the directories we want and putting a path behind them.
+        We then parse through the files that we produce, creating useful information, then putting that
+        useful information into the filebuffer.
+

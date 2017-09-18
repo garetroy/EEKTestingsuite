@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/global/cscratch1/sd/groberts/VisitKNLRebuild/src/databases/EEK/EEKPluginInfo.C
+EEKPluginInfo.h
+-
+visit-config.h
+-
+
+common/plugin/DatabasePluginInfo.h
+plugin_exports.h
+-
+plugin_entry_point.h
+-
+stdio.h
+-
+string
+-
+vector
+-
+
+common/plugin/database_plugin_exports.h
+
+common/plugin/plugin_entry_point.h
+
+common/plugin/plugin_exports.h
+
+databases/EEK/EEKPluginInfo.h
+DatabasePluginInfo.h
+-
+database_plugin_exports.h
+-
+
+include/visit-config.h
+
