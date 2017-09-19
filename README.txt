@@ -1,7 +1,10 @@
 This is a testing suite that tests (VisIt)[https://wci.llnl.gov/simulation/computer-codes/visit/]
 using a dataset called EEK
+
 Authors:
     Garett Roberts
+    Amie Corso
+
 Welcome to the EEK Testing suite!
 
 First off, most of these scripts default assumptions are on a specific directory structure.. This is how it should look.
